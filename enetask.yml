@@ -1,0 +1,14 @@
+- name: Display Current Date and Time
+  set_fact:
+    dateTime: "{{ ansible_date_time.date }}_{{ ansible_date_time.time }}"
+
+- name: print date time
+  debug:
+    var: dateTime
+
+- name: write log in db
+  include_tasks: mysql_query_playbook.yml
+  vars:
+    query: "INSERT INTO `incidentdata`.`ENELogTable` (`Date`, `TaskNumber`, `ShortDes`, `Type`, `Division`, `Zone`, `Status`, `Job_ID`, `Log`) VALUES ('{{ dateTime }}', '{{ TaskNumber }}', '{{ ShortDes }}', '{{ Type }}', '{{ Division }}', '{{ Zone }}', '{{ Status }}', '{{ Job_ID }}', '{{ Log }}');"
+  # Assuming you have TaskNumber, ShortDes, Type, Division, Zone, Status, Job_ID, and Log as extra vars
+  # Add more vars as needed
